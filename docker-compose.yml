@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  #  start Redis, and ensure that data is stored to a mounted volume
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - ./db-data/redis/:/data
+
+  #   start influx db 
+  influxdb:
+    image: influxdb:1.8-alpine
+    container_name: influxdb
+    restart: always
+    environment:
+      - INFLUXDB_DB=benchmarks
+      - INFLUXDB_ADMIN_USER=cyborg
+      - INFLUXDB_ADMIN_PASSWORD=Shivjava2022@
+    ports:
+      - '8086:8086'
+    volumes:
+      - ./db-data/influxdb_data:/var/lib/influxdb
+
